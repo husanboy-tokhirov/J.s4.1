@@ -1,5 +1,10 @@
 let elCountryList = document.querySelector(".country-list");
+let elSearchInput = document.querySelector(".search-input")
+let elSelect = document.querySelector(".select-capitals")
+
+
 function renderCountry(arr, list) {
+    list.innerHTML = ""
     arr.forEach(item => {
         let elItem = document.createElement("li");
         elItem.className = "bg-white w-[264px] rounded-md overflow-hidden";
@@ -28,8 +33,8 @@ function renderCountry(arr, list) {
                         </svg>
                     </button>
                     <button class="w-[40px] h-[40px] rounded-md flex items-center cursor-pointer justify-center border-[2px] border-black">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-trash3-fill" viewBox="0 0 16 16">
-                            <path d="M11 1.5v1h3.5a.5.5 0 0 1 0 1h-.538l-.853 10.66A2 2 0 0 1 11.115 16h-6.23a2 2 0 0 1-1.994-1.84L2.038 3.5H1.5a.5.5 0 0 1 0-1H5v-1A1.5 1.5 0 0 1 6.5 0h3A1.5 1.5 0 0 1 11 1.5m-5 0v1h4v-1a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5M4.5 5.029l.5 8.5a.5.5 0 1 0 .998-.06l-.5-8.5a.5.5 0 1 0-.998.06m6.53-.528a.5.5 0 0 0-.528.47l-.5 8.5a.5.5 0 0 0 .998.058l.5-8.5a.5.5 0 0 0-.47-.528M8 4.5a.5.5 0 0 0-.5.5v8.5a.5.5 0 0 0 1 0V5a.5.5 0 0 0-.5-.5"/>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                            <path d="M11 1.5h1V3h3v1h-1v11.5a1.5 1.5 0 0 1-1.5 1.5H4.5A1.5 1.5 0 0 1 3 14.5V3H2V2h3V1.5h6z"/>
                         </svg>
                     </button>
                 </div>
@@ -38,5 +43,27 @@ function renderCountry(arr, list) {
         list.appendChild(elItem);
     });
 }
-
 renderCountry(countries, elCountryList);
+
+elSearchInput.addEventListener("input", function(evt){
+   let value = evt.target.value
+    if(Number(value)){
+        const filterByPopulation = countries.filter(item => String(item.population).includes(value))  
+        renderCountry(filterByPopulation, elCountryList);
+    }
+    else{
+        const filterByName = countries.filter(item => item.name.toLowerCase().includes(value.toLowerCase()))  
+        renderCountry(filterByName, elCountryList);
+    }
+})
+
+function renderSelectOptions(){
+    countries.forEach(item => {
+        let elOption = document.createElement("option")
+        elOption.textContent = item.capital
+        elOption.value = item.id
+
+        elSelect.appendChild(elOption)
+    })
+}
+renderSelectOptions()
